@@ -1,23 +1,30 @@
-import logo from './logo.svg';
 import './App.css';
+import {useState, useEffect} from 'react'
+import ThumbUpAltIcon from '@mui/icons-material/ThumbUpAlt';
+import SearchMeal from './SearchMeal/SearchMeal';
 
 function App() {
+  const [likeColor, setLikeColor] = useState('')
+  const [randomUser, setRandomUsers] = useState({})
+
+  useEffect(() => {
+    fetch('https://randomuser.me/api/')
+    .then(res => res.json())
+    .then(data => setRandomUsers(data.results[0]))
+    // .then(data => console.log(data.results[0].gender))
+  }, [])
+
+  const handleColor = () => {
+    const color = likeColor ? '' : 'primary'
+    setLikeColor(color)
+  }
+
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      <h1>Random users : {randomUser.name && randomUser.name.title}</h1>
+      <h1>Random users : {randomUser.name?.title}</h1>
+      <ThumbUpAltIcon onClick={handleColor} color={likeColor}></ThumbUpAltIcon>
+      <SearchMeal></SearchMeal>
     </div>
   );
 }
